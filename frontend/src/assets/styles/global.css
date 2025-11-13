@@ -1,0 +1,13 @@
+/* src/assets/styles/global.css */
+:root {
+  /* Colors */
+  --color-primary: #0ebaf2;
+  --color-primary-hover: #74e77b;
+  --color-secondary: #f6b968;
+  --color-background: #0e162b;
+  --color-brackground-light: #1c314c;
+  --color-surface: #733567;
+  --color-surface-light: #82485c;
+  --color-text: #fefefe;
+  --color-text-muted: #cccccc;
+}
