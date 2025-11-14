@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "title": "The Shawshank Redemption",
+    "poster": "https://example.com/posters/shawshank.jpg",
+    "year": 1994,
+    "duration": 142,
+    "director": "Frank Darabont",
+    "cast": ["Tim Robbins", "Morgan Freeman", "Bob Gunton"],
+    "short_plot": "Two imprisoned men bond over a number of years...",
+    "long_plot": "Andy Dufresne, a banker, is sentenced to life in Shawshank State Penitentiary...",
+    "country": "USA",
+    "original_language": "English",
+    "rating": 9.3
+  },
+  {
+    "id": 2,
+    "title": "The Godfather",
+    "poster": "https://example.com/posters/godfather.jpg",
+    "year": 1972,
+    "duration": 175,
+    "director": "Francis Ford Coppola",
+    "cast": ["Marlon Brando", "Al Pacino", "James Caan"],
+    "short_plot": "The aging patriarch of an organized crime dynasty...",
+    "long_plot": "The Godfather follows the story of the Corleone family...",
+    "country": "USA",
+    "original_language": "English",
+    "rating": 9.2
+  },
+  {
+    "id": 3,
+    "title": "The Dark Knight",
+    "poster": "https://example.com/posters/dark_knight.jpg",
+    "year": 2008,
+    "duration": 152,
+    "director": "Christopher Nolan",
+    "cast": ["Christian Bale", "Heath Ledger", "Aaron Eckhart"],
+    "short_plot": "Batman faces the Joker, a criminal mastermind...",
+    "long_plot": "With the help of allies Lt. Jim Gordon and DA Harvey Dent...",
+    "country": "USA",
+    "original_language": "English",
+    "rating": 9.0
+  },
+  {
+    "id": 4,
+    "title": "Parasite",
+    "poster": "https://example.com/posters/parasite.jpg",
+    "year": 2019,
+    "duration": 132,
+    "director": "Bong Joon Ho",
+    "cast": ["Song Kang-ho", "Lee Sun-kyun", "Cho Yeo-jeong"],
+    "short_plot": "A poor family schemes to become employed by a wealthy family...",
+    "long_plot": "The Kim family - father Ki-taek, mother Chung-sook...",
+    "country": "South Korea",
+    "original_language": "Korean",
+    "rating": 8.6
+  },
+  {
+    "id": 5,
+    "title": "Amélie",
+    "poster": "https://example.com/posters/amelie.jpg",
+    "year": 2001,
+    "duration": 122,
+    "director": "Jean-Pierre Jeunet",
+    "cast": ["Audrey Tautou", "Mathieu Kassovitz", "Rufus"],
+    "short_plot": "A whimsical waitress decides to change the lives of those around her...",
+    "long_plot": "Amélie is a story of a young woman who discretely orchestrates...",
+    "country": "France",
+    "original_language": "French",
+    "rating": 8.3
+  }
+]

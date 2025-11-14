@@ -1,0 +1,98 @@
+from flask import Flask, jsonify, request
+from movies import MovieManager
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+app = Flask(__name__)
+movie_manager = MovieManager()
+
+@app.route('/')
+def home():
+    """Home endpoint with API information"""
+    return jsonify({
+        "message": "Movie API",
+        "endpoints": {
+            "/random-movie": "GET - Get a random movie",
+            "/random-movies/<int:n>": "GET - Get N random movies",
+            "/top-movies/<int:n>": "GET - Get top N movies by rating",
+            "/random-movies": "GET - Get random movies with query parameter ?n=5"
+        },
+        "total_movies": movie_manager.get_movie_count()
+    })
+
+@app.route('/random-movie', methods=['GET'])
+def random_movie():
+    """Get a single random movie"""
+    try:
+        movie = movie_manager.get_random_movie()
+        if not movie:
+            return jsonify({"error": "No movies available"}), 404
+        
+        logger.info(f"Returning random movie: {movie.get('title', 'Unknown')}")
+        return jsonify(movie)
+    
+    except Exception as e:
+        logger.error(f"Error in random_movie: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
+
+@app.route('/random-movies', methods=['GET'])
+@app.route('/random-movies/<int:n>', methods=['GET'])
+def random_n_movies(n=None):
+    """Get N random movies"""
+    try:
+        # Get n from query parameter or route parameter
+        if n is None:
+            n = request.args.get('n', default=5, type=int)
+        
+        if n <= 0:
+            return jsonify({"error": "Parameter 'n' must be positive"}), 400
+        
+        movies = movie_manager.get_random_movies(n)
+        
+        logger.info(f"Returning {len(movies)} random movies")
+        return jsonify({
+            "count": len(movies),
+            "movies": movies
+        })
+    
+    except Exception as e:
+        logger.error(f"Error in random_n_movies: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
+
+@app.route('/top-movies', methods=['GET'])
+@app.route('/top-movies/<int:n>', methods=['GET'])
+def top_n_movies(n=None):
+    """Get top N movies by rating"""
+    try:
+        # Get n from query parameter or route parameter
+        if n is None:
+            n = request.args.get('n', default=5, type=int)
+        
+        if n <= 0:
+            return jsonify({"error": "Parameter 'n' must be positive"}), 400
+        
+        movies = movie_manager.get_top_movies(n)
+        
+        logger.info(f"Returning top {len(movies)} movies by rating")
+        return jsonify({
+            "count": len(movies),
+            "movies": movies
+        })
+    
+    except Exception as e:
+        logger.error(f"Error in top_n_movies: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
+
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({"error": "Endpoint not found"}), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({"error": "Internal server error"}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
