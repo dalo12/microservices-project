@@ -4,9 +4,9 @@
       <img :src="mainMovie.poster" alt="Banner Poster" class="banner-img" />
       <div class="banner-info">
         <h2>{{ mainMovie.title }}</h2>
-        <span>{{ mainMovie.duration }}</span>
+        <span>{{ mainMovie.duration }} min.</span>
         <p>{{ mainMovie.short_plot }}</p>
-        <router-link :to="`/movie/${mainMovie.id}`" class="btn">
+        <router-link :movie=mainMovie :to="`/film/${mainMovie.id}`" class="btn">
           More Info
         </router-link>
       </div>

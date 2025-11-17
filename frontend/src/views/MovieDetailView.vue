@@ -1,5 +1,5 @@
 <template>
-  <h1>MOVIE DETAIL</h1>
+  <p>{{ JSON.stringify(movie) }}</p>
   <div class="movie-detail" v-if="movie">
     <div class="detail-banner" :style="{ backgroundImage: `url(${movie.poster})` }">
       <h1>{{ movie.title }}</h1>
@@ -43,8 +43,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useMovieApi } from '../data/db.js';
+import { api } from '@/plugins/axios.js';
+
+/* const props = defineProps({
+  movie: {
+    type: Object,
+    required: true,
+  }
+}); */
 
 // Get the 'id' prop from the router
 const props = defineProps({
@@ -57,7 +65,8 @@ const props = defineProps({
 const { getMovieById } = useMovieApi();
 
 // Fetch the movie data using the id
-const movie = ref(getMovieById(props.id));
+const movie = ref({});
+//const movie = ref(getMovieById(props.id));
 
 // Local state for rating
 const currentRating = ref(movie.value ? movie.value.rating : 0);
@@ -67,6 +76,11 @@ const setRating = (star) => {
   // In a real app, you would also post this to your API
   // e.g., api.post(`/movies/${props.id}/rate`, { rating: star })
 };
+
+onMounted( async  () => {
+  let responseMovie = await api.get(`/movie/${props.id}`);
+  movie.value = responseMovie.data;
+})
 </script>
 
 <style scoped>
