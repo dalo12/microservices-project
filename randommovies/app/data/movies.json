@@ -2,7 +2,7 @@
   {
     "id": 1,
     "title": "The Shawshank Redemption",
-    "poster": "https://example.com/posters/shawshank.jpg",
+    "poster": "https://www.omdb.org/image/default/884.jpeg",
     "year": 1994,
     "duration": 142,
     "director": "Frank Darabont",
@@ -16,7 +16,7 @@
   {
     "id": 2,
     "title": "The Godfather",
-    "poster": "https://example.com/posters/godfather.jpg",
+    "poster": "https://www.omdb.org/image/default/50499.jpeg?v=1",
     "year": 1972,
     "duration": 175,
     "director": "Francis Ford Coppola",
@@ -30,7 +30,7 @@
   {
     "id": 3,
     "title": "The Dark Knight",
-    "poster": "https://example.com/posters/dark_knight.jpg",
+    "poster": "https://www.omdb.org/image/default/1825.jpeg?v=4",
     "year": 2008,
     "duration": 152,
     "director": "Christopher Nolan",
@@ -44,7 +44,7 @@
   {
     "id": 4,
     "title": "Parasite",
-    "poster": "https://example.com/posters/parasite.jpg",
+    "poster": "https://www.omdb.org/image/default/43003.jpeg?v=1",
     "year": 2019,
     "duration": 132,
     "director": "Bong Joon Ho",
@@ -58,7 +58,7 @@
   {
     "id": 5,
     "title": "Amélie",
-    "poster": "https://example.com/posters/amelie.jpg",
+    "poster": "https://www.omdb.org/image/default/412.jpeg",
     "year": 2001,
     "duration": 122,
     "director": "Jean-Pierre Jeunet",
