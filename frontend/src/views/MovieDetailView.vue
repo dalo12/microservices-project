@@ -1,4 +1,5 @@
 <template>
+  <h1>MOVIE DETAIL</h1>
   <div class="movie-detail" v-if="movie">
     <div class="detail-banner" :style="{ backgroundImage: `url(${movie.poster})` }">
       <h1>{{ movie.title }}</h1>

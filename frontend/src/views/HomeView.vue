@@ -3,10 +3,9 @@
     <div class="banner" v-if="mainMovie">
       <img :src="mainMovie.poster" alt="Banner Poster" class="banner-img" />
       <div class="banner-info">
-        <p>{{mainMovie}}</p>
         <h2>{{ mainMovie.title }}</h2>
         <span>{{ mainMovie.duration }}</span>
-        <p>{{ mainMovie.plot_short }}</p>
+        <p>{{ mainMovie.short_plot }}</p>
         <router-link :to="`/movie/${mainMovie.id}`" class="btn">
           More Info
         </router-link>
@@ -40,19 +39,24 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useMovieApi } from '../data/db.js';
 import { api } from '@/plugins/axios.js'; 
 
 const { getRecommended, getTop, getRandomBanner } = useMovieApi();
+const mainMovie = ref({});
+const topFilms = ref({});
 
+
+onMounted(async () => {
+  let responseMainMovie = await api.get('/random-movie');
+  mainMovie.value = responseMainMovie.data || {};
+
+  let responseTopFilms = await api.get('/top-movies/10');
+  topFilms.value = responseTopFilms.data.movies || {};
+})
 // When the component is created, fetch the data
-let responseMainMovie = await api.get('/random-movie');
-const mainMovie = responseMainMovie.data || {};
-console.log(`mainMovie :: ${JSON.stringify(mainMovie)}`);
-let responseTopFilms = await api.get('/top-movies/10');
-const topFilms = responseTopFilms.data || {};
-console.log(`topFilms :: ${JSON.stringify(topFilms)}`);
+
 
 const recommended = ref(getRecommended());
 </script>
@@ -91,9 +95,15 @@ const recommended = ref(getRecommended());
 }
 
 .movie-list h3 {
+  color: #222;
+  font-weight: bold;
   border-bottom: 2px solid #42b883;
   padding-bottom: 5px;
   margin-bottom: 1rem;
+}
+
+.movie-list p{
+  color:#222;
 }
 .scroller {
   display: flex;
