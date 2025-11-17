@@ -14,15 +14,19 @@ movie_manager = MovieManager()
 @app.route('/')
 def home():
     """Home endpoint with API information"""
+    all_ids = movie_manager.get_all_movie_ids()
     return jsonify({
         "message": "Movie API",
         "endpoints": {
             "/random-movie": "GET - Get a random movie",
             "/random-movies/<int:n>": "GET - Get N random movies",
             "/top-movies/<int:n>": "GET - Get top N movies by rating",
-            "/random-movies": "GET - Get random movies with query parameter ?n=5"
+            "/random-movies": "GET - Get random movies with query parameter ?n=5",
+            "/movie/<int:movie_id>": "GET - Get a specific movie by ID",
+            "/movies": "GET - Get all available movie IDs"
         },
-        "total_movies": movie_manager.get_movie_count()
+        "total_movies": movie_manager.get_movie_count(),
+        "available_movie_ids": all_ids
     })
 
 @app.route('/random-movie', methods=['GET'])
@@ -87,6 +91,28 @@ def top_n_movies(n=None):
     except Exception as e:
         logger.error(f"Error in top_n_movies: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
+
+@app.route('/movie/<movie_id>', methods=['GET'])
+def get_movie_by_id(movie_id=None):
+    """Get a specific movie by ID"""
+    try:
+        logger.info(f"Request for movie with ID: {movie_id}")
+        
+        movie = movie_manager.get_movie_by_id(movie_id)
+        
+        if not movie:
+            return jsonify({
+                "error": f"Movie with ID {movie_id} not found",
+                "available_ids": movie_manager.get_all_movie_ids()
+            }), 404
+        
+        logger.info(f"Returning movie: {movie.get('title', 'Unknown')} (ID: {movie_id})")
+        return jsonify(movie)
+    
+    except Exception as e:
+        logger.error(f"Error in get_movie_by_id: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
+
 
 @app.errorhandler(404)
 def not_found(error):

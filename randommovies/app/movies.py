@@ -1,6 +1,6 @@
 import json
 import random
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import os
 
 class MovieManager:
@@ -43,3 +43,33 @@ class MovieManager:
     def get_movie_count(self) -> int:
         """Get total number of movies"""
         return len(self.movies)
+    
+    def get_movie_by_id(self, movie_id: int) -> Optional[Dict[str, Any]]:
+        """Get a movie by its ID"""
+        try:
+            
+            if not self.movies:
+                return None
+            
+            # Convert movie_id to int if it's a string
+            movie_id = int(movie_id)
+            
+            # Search for movie with matching ID
+            for movie in self.movies:
+                if movie.get('id') == movie_id:
+                    return movie
+            
+            return None
+            
+        except ValueError:
+            return None
+        except Exception as e:
+            return None
+        
+    def get_movie_count(self) -> int:
+        """Get total number of movies"""
+        return len(self.movies)
+    
+    def get_all_movie_ids(self) -> List[int]:
+        """Get list of all available movie IDs"""
+        return [movie.get('id') for movie in self.movies if movie.get('id') is not None]
