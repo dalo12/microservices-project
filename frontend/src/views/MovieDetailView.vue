@@ -1,5 +1,4 @@
 <template>
-  <p>{{ JSON.stringify(movie) }}</p>
   <div class="movie-detail" v-if="movie">
     <div class="detail-banner" :style="{ backgroundImage: `url(${movie.poster})` }">
       <h1>{{ movie.title }}</h1>
@@ -11,10 +10,12 @@
       </div>
       <div class="info-col">
         <h2>{{ movie.title }}</h2>
-        <span class="meta">{{ movie.duration }} | Directed by: {{ movie.director }}</span>
+        <span class="meta">{{ movie.duration }} min | Directed by: {{ movie.director }}</span>
+        <span class="meta">Released: {{ movie.year }}</span>
+        <span class="meta">Genre: {{ movie.genre }}</span>
 
         <h3>Plot</h3>
-        <p>{{ movie.plot_long }}</p>
+        <p>{{ movie.long_plot }}</p>
 
         <h3>Main Cast</h3>
         <ul>
@@ -47,13 +48,6 @@ import { onMounted, ref } from 'vue';
 import { useMovieApi } from '../data/db.js';
 import { api } from '@/plugins/axios.js';
 
-/* const props = defineProps({
-  movie: {
-    type: Object,
-    required: true,
-  }
-}); */
-
 // Get the 'id' prop from the router
 const props = defineProps({
   id: {
@@ -62,11 +56,8 @@ const props = defineProps({
   },
 });
 
-const { getMovieById } = useMovieApi();
-
 // Fetch the movie data using the id
 const movie = ref({});
-//const movie = ref(getMovieById(props.id));
 
 // Local state for rating
 const currentRating = ref(movie.value ? movie.value.rating : 0);
@@ -84,6 +75,12 @@ onMounted( async  () => {
 </script>
 
 <style scoped>
+p, li {
+  color:#555
+}
+h1, h2, h3 {
+  color: #333;
+}
 .detail-banner {
   height: 300px;
   background-size: cover;
@@ -107,6 +104,7 @@ onMounted( async  () => {
   border-radius: 8px;
 }
 .detail-banner h1 {
+  color: #fefefe; 
   position: relative; /* Bring text above overlay */
   margin: 0;
   font-size: 3rem;
