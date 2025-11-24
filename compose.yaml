@@ -1,5 +1,6 @@
 services:
   randommovies: 
+    container_name: randommovies
     build:
       context: randommovies/app
       target: builder
@@ -11,6 +12,7 @@ services:
     networks:
       - random-frontend-net
   frontend:
+    container_name: frontend
     build:
       context: frontend
     environment:
@@ -21,12 +23,24 @@ services:
       - random-frontend-net
   database:
     image: mongo:latest
+    container_name: database
+    environment:
+  # For release reasons, this database uses hardcoded credentials. In a real world application, this must be in a .env file
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: 12345
+      MONGO_INITDB_DATABASE: mflix
     ports:
       - '27017:27017'
     volumes:
-      - mongo-data: /database/data/db
+      - mongo-data:/data/db
+    networks:
+      - mongo-network
     
+volumes:
+  mongo-data:
 
 networks:
     random-frontend-net:
       driver: bridge    
+    mongo-network:
+      driver: bridge
