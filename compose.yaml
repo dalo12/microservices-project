@@ -9,7 +9,7 @@ services:
     ports:
       - '5000:5000'
     networks:
-      - movies-frontend-net
+      - random-frontend-net
   frontend:
     build:
       context: frontend
@@ -18,8 +18,15 @@ services:
     ports:
       - 8080:8080
     networks:
-      - movies-frontend-net
+      - random-frontend-net
+  database:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data: /database/data/db
+    
 
 networks:
-    movies-frontend-net:
+    random-frontend-net:
       driver: bridge    
