@@ -1,0 +1,25 @@
+services:
+  randommovies: 
+    build:
+      context: randommovies/app
+      target: builder
+    # flask requires SIGINT to stop gracefully
+    # (default stop signal from Compose is SIGTERM)
+    stop_signal: SIGINT
+    ports:
+      - '5000:5000'
+    networks:
+      - movies-frontend-net
+  frontend:
+    build:
+      context: frontend
+    environment:
+      NODE_ENV: production
+    ports:
+      - 8080:8080
+    networks:
+      - movies-frontend-net
+
+networks:
+    movies-frontend-net:
+      driver: bridge    
