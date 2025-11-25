@@ -1,5 +1,5 @@
 # --- Stage 1: Download and Prepare Data ---
-FROM ubuntu:22.04 as data_preparer
+FROM ubuntu:22.04 AS data_preparer
 
 # Install necessary tools
 RUN apt-get update && apt-get install -y \
@@ -7,7 +7,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-RUN https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2204-x86_64-100.13.0.deb -o mongodb-database-tools.deb
+# Download and install MongoDB Database Tools
+RUN curl https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2204-x86_64-100.13.0.deb -o mongodb-database-tools.deb
 RUN dpkg -i mongodb-database-tools.deb
 
 WORKDIR /tmp/mflix_setup
@@ -16,7 +17,7 @@ WORKDIR /tmp/mflix_setup
 RUN curl https://atlas-education.s3.amazonaws.com/sampledata.archive -o sampledata.archive
 
 # --- Stage 2: Final MongoDB Image ---
-FROM mongo:latest as database # Use an official MongoDB image
+FROM mongo:latest AS database
 
 # Copy the prepared data from the first stage
 COPY --from=data_preparer /tmp/mflix_setup/ /tmp/mflix_setup/

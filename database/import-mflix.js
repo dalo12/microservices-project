@@ -13,10 +13,10 @@ runProgram('mongorestore',
     '--username', 'admin',
     '--password', '12345',
     '--authenticationDatabase', 'admin',
-    '--archive=sampledata.archive', 
+    '--archive=/tmp/mflix_setup/sampledata.archive', 
     '--port=27017')
 
-// Import comments collection
+/* // Import comments collection
 runProgram(
   'mongoimport',
   '--db', 'mflix',
@@ -51,5 +51,5 @@ runProgram(
   '--drop',
   '--file', '/tmp/mflix_setup/users.json'
 );
-
+ */
 print('MFlix data import finished.');
