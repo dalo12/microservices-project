@@ -22,17 +22,19 @@ services:
     networks:
       - random-frontend-net
   database:
-    image: mongo:latest
+    build:
+      context: ./database
     container_name: database
-    environment:
-  # For release reasons, this database uses hardcoded credentials. In a real world application, this must be in a .env file
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: 12345
-      MONGO_INITDB_DATABASE: mflix
     ports:
-      - '27017:27017'
+      - "27017:27017"
     volumes:
+      # Map the data directory on the host to persist the database files
       - mongo-data:/data/db
+      # Map the script directory for the entrypoint and import script
+      - ./database:/docker-entrypoint-initdb.d
+    environment:
+      # Use the environment variable to manage the initial import state
+      - MFLIX_IMPORTED_FLAG=/data/mflix_imported
     networks:
       - mongo-network
     
