@@ -1,27 +1,12 @@
 {
   "name": "movies",
   "version": "1.0.0",
-  "description": "A GraphQL service for the MFlix sample database using MongoDB.",
-  "main": "src/index.ts",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "ts-node src/index.ts",
-    "build": "tsc",
-    "dev": "ts-node-dev src/index.ts"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "apollo-server": "^3.6.7",
-    "graphql": "^15.5.0",
-    "mongoose": "^6.2.0",
-    "dotenv": "^10.0.0"
-  },
-  "devDependencies": {
-    "typescript": "^4.5.4",
-    "ts-node": "^10.4.0",
-    "ts-node-dev": "^1.1.8",
-    "@types/node": "^16.11.7",
-    "@types/graphql": "^14.5.0"
-  },
-  "engines": {
-    "node": ">=14.0.0"
-  }
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
