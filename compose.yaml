@@ -35,6 +35,19 @@ services:
       - mongo-data:/data/db
     networks:
       - mongo-network
+
+  movies:
+    build:
+      context: movies
+    container_name: movies
+    ports:
+      - "4000:4000"
+    depends_on:
+      - database
+    environment:
+      MONGO_URI: mongodb://admin:12345@mongodb:27017/mflix?authSource=admin
+    networks:
+      - mongo-network
     
 volumes:
   mongo-data:
