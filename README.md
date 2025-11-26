@@ -15,4 +15,4 @@ And import import it with `mongorestore`
 
     $ mongorestore --username admin --password 12345 --authenticationDatabase admin --archive=sampledata.archive --port=27017
 
-Note: for use `mongorestore` you need the MongoDB Command Line Database Tools. You can download it from [MongoDB Download Center](https://www.mongodb.com/try/download/database-tools) and install it
+Note: to use `mongorestore` you need the MongoDB Command Line Database Tools. You can download it from [MongoDB Download Center](https://www.mongodb.com/try/download/database-tools) and install it
