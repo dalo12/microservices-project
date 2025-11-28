@@ -54,7 +54,10 @@ class MovieManager:
         
         query = """
         query {
-            films()
+            films(limit: 100){
+                _id
+                title
+            }
         }
         """
         
@@ -69,7 +72,7 @@ class MovieManager:
             
             films = data.get("data", {}).get("films", [])
             
-            return films.len()
+            return len(films)
         except Exception as e:
             print(f"Error fetching movie count: {e}")
             return 0

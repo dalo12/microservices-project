@@ -92,6 +92,21 @@ def top_n_movies(n=None):
         logger.error(f"Error in top_n_movies: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
 
+@app.route('/movies', methods=['GET'])
+def get_all_movie_ids():
+    """Get all available movie IDs"""
+    try:
+        movie_ids = movie_manager.get_all_movie_ids()
+        logger.info(f"Returning {len(movie_ids)} movie IDs")
+        return jsonify({
+            "total_movie_ids": len(movie_ids),
+            "movie_ids": movie_ids
+        })
+    
+    except Exception as e:
+        logger.error(f"Error in get_all_movie_ids: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
+
 @app.route('/movie/<movie_id>', methods=['GET'])
 def get_movie_by_id(movie_id=None):
     """Get a specific movie by ID"""
