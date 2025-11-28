@@ -54,7 +54,7 @@ class MovieManager:
         
         query = """
         query {
-            movieCount
+            films()
         }
         """
         
@@ -67,7 +67,9 @@ class MovieManager:
                 print(f"GraphQL Error: {data['errors']}")
                 return 0
             
-            return data.get("data", {}).get("movieCount", 0)
+            films = data.get("data", {}).get("films", [])
+            
+            return films.len()
         except Exception as e:
             print(f"Error fetching movie count: {e}")
             return 0
@@ -127,7 +129,7 @@ class MovieManager:
         
         query = """
         query($id: String!) {
-            movieById(id: $id) {
+            film(id: $id) {
                 _id
                 title
                 year
