@@ -11,6 +11,7 @@ services:
       - '5000:5000'
     networks:
       - random-frontend-net
+      - movies-network
   frontend:
     container_name: frontend
     build:
@@ -28,13 +29,28 @@ services:
   # For release reasons, this database uses hardcoded credentials. In a real world application, this must be in a .env file
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: 12345
-      MONGO_INITDB_DATABASE: mflix
+      MONGO_INITDB_DATABASE: sample_mflix
     ports:
       - '27017:27017'
     volumes:
       - mongo-data:/data/db
     networks:
-      - mongo-network
+      - movies-network
+
+  movies:
+    container_name: movies
+    build:
+      context: movies
+    depends_on:
+      - database
+    environment:
+      NODE_ENV: production
+      DATABASE_CONN_STRING: mongodb://admin:12345@database:27017/sample_mflix?authSource=admin
+      ALLOWED_ORIGINS: '*'
+    ports:
+      - 4000:4000
+    networks:
+      - movies-network
     
 volumes:
   mongo-data:
@@ -42,5 +58,5 @@ volumes:
 networks:
     random-frontend-net:
       driver: bridge    
-    mongo-network:
+    movies-network:
       driver: bridge
