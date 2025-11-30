@@ -4,7 +4,9 @@ const resolvers = {
   Query: {
     films: async (_, { limit = 10, skip = 0, filter = {} }) => {
       try {
-        let query = {};
+        let query = {
+          poster: { $exists: true, $ne: null }
+        };
         
         // Build query based on filters
         if (filter.title) {
@@ -23,10 +25,16 @@ const resolvers = {
           query.cast = { $in: [new RegExp(filter.cast, 'i')] };
         }
 
-        return await Film.find(query)
+        let results = await Film.find(query)
           .limit(limit)
           .skip(skip)
           .sort({ year: -1 });
+        
+        console.log('Movie.poster: ', results[0].poster);
+
+        return results;
+
+        console.log()
       } catch (error) {
         throw new Error('Error fetching films: ' + error.message);
       }
@@ -35,8 +43,8 @@ const resolvers = {
     film: async (_, { id }) => {
       try {
         const film = await Film.findById(id);
-        if (!film) {
-          throw new Error('Film not found');
+        if (!film || !film.poster) {
+          throw new Error('Film not found or has no poster');
         }
         return film;
       } catch (error) {
@@ -47,7 +55,8 @@ const resolvers = {
     searchFilms: async (_, { title }) => {
       try {
         return await Film.find({
-          title: { $regex: title, $options: 'i' }
+          title: { $regex: title, $options: 'i' },
+          poster: { $exists: true, $ne: null }
         }).limit(20);
       } catch (error) {
         throw new Error('Error searching films: ' + error.message);
@@ -57,7 +66,8 @@ const resolvers = {
     filmsByGenre: async (_, { genre }) => {
       try {
         return await Film.find({
-          genres: { $in: [genre] }
+          genres: { $in: [genre] },
+          poster: { $exists: true, $ne: null }
         }).limit(20).sort({ 'imdb.rating': -1 });
       } catch (error) {
         throw new Error('Error fetching films by genre: ' + error.message);
@@ -67,7 +77,8 @@ const resolvers = {
     filmsByYearRange: async (_, { startYear, endYear }) => {
       try {
         return await Film.find({
-          year: { $gte: startYear, $lte: endYear }
+          year: { $gte: startYear, $lte: endYear },
+          poster: { $exists: true, $ne: null }
         }).limit(50).sort({ year: 1 });
       } catch (error) {
         throw new Error('Error fetching films by year range: ' + error.message);
@@ -77,7 +88,8 @@ const resolvers = {
     topRatedFilms: async (_, { limit = 10 }) => {
       try {
         return await Film.find({
-          'imdb.rating': { $exists: true, $ne: null }
+          'imdb.rating': { $exists: true, $ne: null },
+          poster: { $exists: true, $ne: null }
         })
         .sort({ 'imdb.rating': -1 })
         .limit(limit);
@@ -86,44 +98,6 @@ const resolvers = {
       }
     }
   },
-
-  Mutation: {
-    addFilm: async (_, args) => {
-      try {
-        const film = new Film(args);
-        return await film.save();
-      } catch (error) {
-        throw new Error('Error adding film: ' + error.message);
-      }
-    },
-
-    updateFilm: async (_, { id, ...updates }) => {
-      try {
-        const film = await Film.findByIdAndUpdate(
-          id,
-          { $set: updates },
-          { new: true, runValidators: true }
-        );
-        
-        if (!film) {
-          throw new Error('Film not found');
-        }
-        
-        return film;
-      } catch (error) {
-        throw new Error('Error updating film: ' + error.message);
-      }
-    },
-
-    deleteFilm: async (_, { id }) => {
-      try {
-        const result = await Film.findByIdAndDelete(id);
-        return !!result;
-      } catch (error) {
-        throw new Error('Error deleting film: ' + error.message);
-      }
-    }
-  }
 };
 
 module.exports = resolvers;

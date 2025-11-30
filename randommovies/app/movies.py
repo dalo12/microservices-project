@@ -5,9 +5,50 @@ import os
 import requests
 
 apiUrl = os.environ.get('MOVIES_URL') or "http://127.0.0.1:4000/graphql"
+ALL_FIELDS = """
+    _id
+    plot
+    genres
+    runtime
+    cast
+    poster
+    title
+    fullplot
+    languages
+    released
+    directors
+    rated
+    awards {
+        wins
+        nominations
+        text
+    } 
+    year
+    imdb {
+        id
+        rating
+        votes
+    }
+    countries
+    type
+    tomatoes {
+        lastUpdated
+        viewer {
+            rating
+            numReviews
+            meter
+        } 
+        critic {
+            rating
+            numReviews
+            meter
+        }
+    }
+    num_mflix_comments
+"""
 
 class MovieManager:
-    def _fetch_movies_from_api(self, limit: int = 1000, skip: int = 0) -> List[Dict[str, Any]]:
+    def _fetch_movies_from_api(self, limit: int = 100, skip: int = 0) -> List[Dict[str, Any]]:
         """Fetch movies from GraphQL API with pagination"""
         if not apiUrl:
             print("Warning: MOVIES_URL environment variable not set.")
@@ -16,16 +57,10 @@ class MovieManager:
         query = """
         query($limit: Int!, $skip: Int!) {
             films(limit: $limit, skip: $skip) {
-                _id
-                title
-                year
-                imdb {
-                    rating
-                }
-                plot
+                ALL_FIELDS
             }
         }
-        """
+        """.replace("ALL_FIELDS", ALL_FIELDS)
         
         try:
             response = requests.post(apiUrl, json={
@@ -55,11 +90,10 @@ class MovieManager:
         query = """
         query {
             films(limit: 100){
-                _id
-                title
+                ALL_FIELDS
             }
         }
-        """
+        """.replace("ALL_FIELDS", ALL_FIELDS)
         
         try:
             response = requests.post(apiUrl, json={"query": query})
@@ -85,7 +119,7 @@ class MovieManager:
         if total_count == 0:
             return []
         
-        batch_size = 1000
+        batch_size = 100
         skip = 0
         
         while skip < total_count:
@@ -117,7 +151,20 @@ class MovieManager:
             return []
         
         movies = self._fetch_all_movies()
-        sorted_movies = sorted(movies, key=lambda x: x.get('imdb', {}).get('rating', 0), reverse=True)
+        
+        # Filter out movies without a rating
+        movies_with_rating = [
+            movie for movie in movies 
+            if movie.get('imdb', {}).get('rating') is not None
+        ]
+        
+        # Sort by rating in descending order
+        sorted_movies = sorted(
+            movies_with_rating, 
+            key=lambda x: x.get('imdb', {}).get('rating', 0), 
+            reverse=True
+        )
+        
         n = min(n, len(sorted_movies))
         return sorted_movies[:n]
     
@@ -133,16 +180,10 @@ class MovieManager:
         query = """
         query($id: String!) {
             film(id: $id) {
-                _id
-                title
-                year
-                imdb {
-                    rating
-                }
-                plot
+                ALL_FIELDS
             }
         }
-        """
+        """.replace("ALL_FIELDS", ALL_FIELDS)
         
         try:
             response = requests.post(apiUrl, json={
