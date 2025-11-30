@@ -54,13 +54,13 @@ class MovieManager:
             print("Warning: MOVIES_URL environment variable not set.")
             return []
         
-        query = """
-        query($limit: Int!, $skip: Int!) {
-            films(limit: $limit, skip: $skip) {
-                ALL_FIELDS
-            }
-        }
-        """.replace("ALL_FIELDS", ALL_FIELDS)
+        query = f"""
+        query($limit: Int!, $skip: Int!) {{
+            films(limit: $limit, skip: $skip) {{
+                {ALL_FIELDS}
+            }}
+        }}
+        """
         
         try:
             response = requests.post(apiUrl, json={
@@ -87,13 +87,13 @@ class MovieManager:
         if not apiUrl:
             return 0
         
-        query = """
-        query {
-            films(limit: 100){
-                ALL_FIELDS
-            }
-        }
-        """.replace("ALL_FIELDS", ALL_FIELDS)
+        query = f"""
+        query {{
+            films(limit: 100){{
+                {ALL_FIELDS}
+            }}
+        }}
+        """
         
         try:
             response = requests.post(apiUrl, json={"query": query})

@@ -10,7 +10,7 @@ services:
     depends_on:
       - movies
     environment:
-      MOVIES_URL: http://movies:4000
+      MOVIES_URL: http://movies:4000/graphql
     ports:
       - '5000:5000'
     networks:

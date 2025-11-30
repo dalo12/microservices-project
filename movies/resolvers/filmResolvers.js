@@ -4,9 +4,7 @@ const resolvers = {
   Query: {
     films: async (_, { limit = 10, skip = 0, filter = {} }) => {
       try {
-        let query = {
-          poster: { $exists: true, $ne: null }
-        };
+        let query = {};
         
         // Build query based on filters
         if (filter.title) {
@@ -30,7 +28,7 @@ const resolvers = {
           .skip(skip)
           .sort({ year: -1 });
         
-        console.log('Movie.poster: ', results[0].poster);
+        console.log('Movie.poster: ', results[0]?.poster);
 
         return results;
 

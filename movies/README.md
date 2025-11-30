@@ -1,0 +1,3 @@
+For example, you can make queries to the server in this way
+
+    $ curl -X POST http://localhost:4000/graphql   -H "Content-Type: application/json"   -d '{"query": "{ films(limit: 1) {_id plot genres runtime cast poster title fullplot languages released directors rated awards{wins nominations text} year imdb{id rating votes} countries type tomatoes{lastUpdated viewer{rating numReviews meter} critic{rating numReviews meter} } num_mflix_comments} }"}'
