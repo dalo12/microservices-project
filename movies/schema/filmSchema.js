@@ -3,20 +3,24 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql`
   type Film {
     _id: ID!
-    title: String!
-    year: Int!
-    runtime: Int
-    released: String
     plot: String
-    fullplot: String
-    type: String
-    directors: [String]
-    cast: [String]
-    countries: [String]
     genres: [String]
-    imdb: IMDB
-    tomatoes: Tomatoes
+    runtime: Int
+    cast: [String]
+    poster: String
+    title: String!
+    fullplot: String
+    languages: [String]
+    released: String
+    directors: [String]
+    rated: String
     awards: Awards
+    year: Int
+    imdb: IMDB
+    countries: [String]
+    type: String
+    tomatoes: Tomatoes
+    num_mflix_comments: Int
   }
 
   type IMDB {
@@ -73,34 +77,6 @@ const typeDefs = gql`
     
     # Get top rated films
     topRatedFilms(limit: Int): [Film]
-  }
-
-  type Mutation {
-    # Add a new film
-    addFilm(
-      title: String!
-      year: Int!
-      runtime: Int
-      plot: String
-      directors: [String]
-      cast: [String]
-      genres: [String]
-    ): Film
-    
-    # Update an existing film
-    updateFilm(
-      id: ID!
-      title: String
-      year: Int
-      runtime: Int
-      plot: String
-      directors: [String]
-      cast: [String]
-      genres: [String]
-    ): Film
-    
-    # Delete a film
-    deleteFilm(id: ID!): Boolean
   }
 `;
 

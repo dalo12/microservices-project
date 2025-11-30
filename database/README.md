@@ -16,4 +16,4 @@ Note: you need the MongoDB Command Line Database Tools. You can download it from
 
 Finally, to check if the import worked log into the MongoDB service using
 
-    $ mongosh "mongodb://admin:12345@localhost:27017/mflix?authSource=admin"
+    $ mongosh "mongodb://admin:12345@localhost:27017/sample_mflix?authSource=admin"
