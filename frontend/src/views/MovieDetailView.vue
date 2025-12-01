@@ -1,21 +1,21 @@
 <template>
   <div class="movie-detail" v-if="movie">
-    <div class="detail-banner" :style="{ backgroundImage: `url(${movie.poster})` }">
+    <div class="detail-banner" :style="{ backgroundImage: `url(${movie.poster || altPoster})` }">
       <h1>{{ movie.title }}</h1>
     </div>
 
     <div class="detail-content">
       <div class="poster-col">
-        <img :src="movie.poster" :alt="movie.title" class="poster-img" />
+        <img :src="movie.poster || altPoster" :alt="movie.title" class="poster-img" />
       </div>
       <div class="info-col">
         <h2>{{ movie.title }}</h2>
-        <span class="meta">{{ movie.duration }} min | Directed by: {{ movie.director }}</span>
+        <span class="meta">{{ movie.runtime }} min | Directed by: {{ movie.directors[0] }}</span>
         <span class="meta">Released: {{ movie.year }}</span>
-        <span class="meta">Genre: {{ movie.genre }}</span>
+        <span class="meta">Genre: {{ movie.genres[0] }}</span>
 
         <h3>Plot</h3>
-        <p>{{ movie.long_plot }}</p>
+        <p>{{ movie.fullplot }}</p>
 
         <h3>Main Cast</h3>
         <ul>
@@ -45,9 +45,10 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useMovieApi } from '../data/db.js';
 import { api } from '@/plugins/axios.js';
 
+
+const altPoster = "https://i.imgur.com/pu5cj3w.png";
 // Get the 'id' prop from the router
 const props = defineProps({
   id: {

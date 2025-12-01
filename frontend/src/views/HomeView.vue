@@ -1,11 +1,11 @@
 <template>
   <div class="home">
     <div class="banner" v-if="mainMovie">
-      <img :src="mainMovie.poster" alt="Banner Poster" class="banner-img" />
+      <img :src="mainMovie.poster || altPoster" alt="Banner Poster" class="banner-img" />
       <div class="banner-info">
         <h2>{{ mainMovie.title }}</h2>
-        <span>{{ mainMovie.duration }} min.</span>
-        <p>{{ mainMovie.short_plot }}</p>
+        <span>{{ mainMovie.runtime }} min.</span>
+        <p>{{ mainMovie.plot }}</p>
         <router-link :movie=mainMovie :to="`/film/${mainMovie.id}`" class="btn">
           More Info
         </router-link>
@@ -17,7 +17,7 @@
       <div class="scroller">
         <div v-for="movie in recommended" :key="movie.id" class="movie-card">
           <router-link :to="`/movie/${movie.id}`">
-            <img :src="movie.poster" :alt="movie.title" />
+            <img :src="movie.poster || altPoster" :alt="movie.title" />
             <p>{{ movie.title }}</p>
           </router-link>
         </div>
@@ -29,7 +29,7 @@
       <div class="scroller">
         <div v-for="movie in topFilms" :key="movie.id" class="movie-card">
           <router-link :to="`/movie/${movie.id}`">
-            <img :src="movie.poster" :alt="movie.title" />
+            <img :src="movie.poster || altPoster" :alt="movie.title" />
             <p>{{ movie.title }}</p>
           </router-link>
         </div>
@@ -46,7 +46,7 @@ import { api } from '@/plugins/axios.js';
 const { getRecommended, getTop, getRandomBanner } = useMovieApi();
 const mainMovie = ref({});
 const topFilms = ref({});
-
+const altPoster = "https://i.imgur.com/pu5cj3w.png";
 
 onMounted(async () => {
   let responseMainMovie = await api.get('/random-movie');
