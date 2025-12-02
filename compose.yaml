@@ -102,7 +102,10 @@ services:
     build:
       context: recomendador
     environment:
-      DATABASE_CONN_STRING: mongodb://admin:12345@localhost:27017/sample_mflix?authSource=admin
+      DATABASE_CONN_STRING: mongodb://admin:12345@database:27017/sample_mflix?authSource=admin
+      RATINGS_DB_CONN_STRING: mongodb://admin:12345@database:27017/ratings_db?authSource=admin
+    ports:
+      - "5002:8000"
     depends_on:
       - database
     networks:
@@ -119,4 +122,6 @@ networks:
     opinion-net:
       driver: bridge
     rating-net:
+      driver: bridge
+    recommender-net:
       driver: bridge
