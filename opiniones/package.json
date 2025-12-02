@@ -1,0 +1,13 @@
+{
+    "name": "opiniones",
+    "version": "1.0.0",
+    "description": "Microservice for processing movie ratings",
+    "main": "worker.js",
+    "scripts": {
+        "start": "node worker.js"
+    },
+    "dependencies": {
+        "amqplib": "^0.10.3",
+        "mongoose": "^7.5.0"
+    }
+}

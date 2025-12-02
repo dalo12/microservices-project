@@ -56,6 +56,40 @@ services:
     networks:
       - movies-network
     
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - movies-network
+
+  calificacion:
+    container_name: calificacion
+    build:
+      context: calificacion
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq
+    ports:
+      - "5001:5001"
+    depends_on:
+      - rabbitmq
+    networks:
+      - movies-network
+
+  opiniones:
+    container_name: opiniones
+    build:
+      context: opiniones
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq
+      DATABASE_CONN_STRING: mongodb://admin:12345@database:27017/ratings_db?authSource=admin
+    depends_on:
+      - rabbitmq
+      - database
+    networks:
+      - movies-network
 volumes:
   mongo-data:
 
