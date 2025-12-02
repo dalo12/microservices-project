@@ -84,7 +84,7 @@ services:
     depends_on:
       - rabbitmq
     networks:
-      - rating-network
+      - rating-net
       - rabbit-net
 
   opiniones:

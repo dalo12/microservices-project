@@ -45,7 +45,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { api } from '@/plugins/axios.js';
+import { apiRandomMovies } from '@/plugins/axios.js';
 
 
 const altPoster = "https://res.cloudinary.com/drspuruy2/image/upload/v1764677507/no_image_available_l6jwse.png";
@@ -70,7 +70,7 @@ const setRating = (star) => {
 };
 
 onMounted( async  () => {
-  let responseMovie = await api.get(`/movie/${props.id}`);
+  let responseMovie = await apiRandomMovies.get(`/movie/${props.id}`);
   movie.value = responseMovie.data;
 })
 </script>
