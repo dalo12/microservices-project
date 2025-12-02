@@ -16,7 +16,7 @@
       <h3>Recommended Films</h3>
       <div class="scroller">
         <div v-for="movie in recommended" :key="movie._id" class="movie-card">
-          <router-link :to="`/movie/${movie._id}`">
+          <router-link :to="{name: 'description', path: `/movie/${movie._id}`, params: {id: movie._id, movie: movie}}">
             <img :src="movie.poster || altPoster" :alt="movie.title" />
             <p>{{ movie.title }}</p>
           </router-link>
@@ -28,7 +28,7 @@
       <h3>Top Films</h3>
       <div class="scroller">
         <div v-for="movie in topFilms" :key="movie._id" class="movie-card">
-          <router-link :to="`/film/${movie._id}`">
+          <router-link :to="{name: 'description', path: `/movie/${movie._id}`, params: {id: movie._id, movie: movie}}">
             <img :src="movie.poster || altPoster" :alt="movie.title" />
             <p>{{ movie.title }}</p>
           </router-link>
@@ -40,10 +40,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useMovieApi } from '../data/db.js';
 import { apiRandomMovies, apiRecommendedMovies } from '@/plugins/axios.js'; 
 
-const { getRecommended, getTop, getRandomBanner } = useMovieApi();
 const mainMovie = ref({});
 const topFilms = ref({});
 const altPoster = "https://res.cloudinary.com/drspuruy2/image/upload/v1764677507/no_image_available_l6jwse.png";
@@ -58,7 +56,7 @@ onMounted(async () => {
   topFilms.value = responseTopFilms.data.movies || {};
 
   let responseRecommended = await apiRecommendedMovies.get(`/recommend/${userMail}`);
-  recommended.value = responseRecommended.data.movies || {};
+  recommended.value = responseRecommended.data || {};
 })
 </script>
 

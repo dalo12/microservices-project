@@ -1,25 +1,24 @@
 <template>
-  <div class="movie-detail" v-if="movie">
-    <div class="detail-banner" :style="{ backgroundImage: `url(${movie.poster || altPoster})` }">
-      <h1>{{ movie.title }}</h1>
+  <div class="movie-detail" v-if="selectedMovie">
+    <div class="detail-banner" :style="{ backgroundImage: `url(${selectedMovie.poster || altPoster})` }">
+      <h1>{{ selectedMovie.title }}</h1>
     </div>
-
     <div class="detail-content">
       <div class="poster-col">
-        <img :src="movie.poster || altPoster" :alt="movie.title" class="poster-img" />
+        <img :src="selectedMovie.poster || altPoster" :alt="selectedMovie.title" class="poster-img" />
       </div>
       <div class="info-col">
-        <h2>{{ movie.title }}</h2>
-        <span class="meta">{{ movie.runtime || "undefined" }} min | Directed by: {{ movie.directors?.join(', ') || "Unknown"}}</span>
-        <span class="meta">Released: {{ movie.year || "Unknown" }}</span>
-        <span class="meta">Genre: {{ movie.genres?.join(', ') || "Unknown" }}</span>
+        <h2>{{ selectedMovie.title }}</h2>
+        <span class="meta">{{ selectedMovie.runtime || "undefined" }} min | Directed by: {{ selectedMovie.directors?.join(', ') || "Unknown"}}</span>
+        <span class="meta">Released: {{ selectedMovie.year || "Unknown" }}</span>
+        <span class="meta">Genre: {{ selectedMovie.genres?.join(', ') || "Unknown" }}</span>
 
         <h3>Plot</h3>
-        <p>{{ movie.fullplot || "Unknown" }}</p>
+        <p>{{ selectedMovie.fullplot || "Unknown" }}</p>
 
         <h3>Main Cast</h3>
         <ul>
-          <li v-for="actor in movie.cast" :key="actor">{{ actor }}</li>
+          <li v-for="actor in selectedMovie.cast" :key="actor">{{ actor }}</li>
         </ul>
 
         <h3>Rate this Film</h3>
@@ -39,12 +38,13 @@
     </div>
   </div>
   <div v-else>
-    <p>Loading movie...</p>
+    <p>Movie not found</p>
   </div>
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { apiRandomMovies } from '@/plugins/axios.js';
 
 
@@ -55,13 +55,17 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  movie: {
+    type: Object,
+    required: true
+  },
 });
 
-// Fetch the movie data using the id
-const movie = ref({});
+const route = useRoute();
+const selectedMovie = ref({});
 
 // Local state for rating
-const currentRating = ref(movie.value ? movie.value.rating : 0);
+const currentRating = ref(selectedMovie.value ? selectedMovie.value.rating : 0);
 
 const setRating = (star) => {
   currentRating.value = star;
@@ -69,10 +73,24 @@ const setRating = (star) => {
   // e.g., api.post(`/movies/${props.id}/rate`, { rating: star })
 };
 
-onMounted( async  () => {
-  let responseMovie = await apiRandomMovies.get(`/movie/${props.id}`);
-  movie.value = responseMovie.data;
-})
+onMounted( () => {
+  // Get movie from route params
+  if (route.params.movie) {
+    selectedMovie.value = route.params.movie;
+  } else if (route.params.id) {
+    // Fallback: fetch by ID if movie object not passed
+    fetchMovieById(route.params.id);
+  }
+});
+
+const fetchMovieById = async (movieId) => {
+  try {
+    const response = await apiRandomMovies.get(`/movie/${movieId}`);
+    selectedMovie.value = response.data;
+  } catch (error) {
+    console.error('Error fetching movie:', error);
+  }
+};
 </script>
 
 <style scoped>
