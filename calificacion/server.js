@@ -1,9 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const amqp = require('amqplib');
 
 const app = express();
 const port = 5001;
+
+// Enable CORS for all routes
+app.use(cors());
 
 app.use(bodyParser.json());
 

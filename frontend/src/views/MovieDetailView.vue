@@ -45,11 +45,12 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { apiRandomMovies } from '@/plugins/axios.js';
+import { apiRandomMovies, apiRating } from '@/plugins/axios.js';
 
 
 const altPoster = "https://res.cloudinary.com/drspuruy2/image/upload/v1764677507/no_image_available_l6jwse.png";
-// Get the 'id' prop from the router
+const userMail = "user@mail.com"
+
 const props = defineProps({
   id: {
     type: String,
@@ -69,8 +70,14 @@ const currentRating = ref(selectedMovie.value ? selectedMovie.value.rating : 0);
 
 const setRating = (star) => {
   currentRating.value = star;
-  // In a real app, you would also post this to your API
-  // e.g., api.post(`/movies/${props.id}/rate`, { rating: star })
+  
+  apiRating.post('/ratings', {
+    email: userMail,
+    movieId: selectedMovie.value._id,
+    rating: star,
+    comment: ""
+  })
+
 };
 
 onMounted( () => {
