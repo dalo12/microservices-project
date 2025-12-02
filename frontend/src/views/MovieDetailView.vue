@@ -10,9 +10,9 @@
       </div>
       <div class="info-col">
         <h2>{{ movie.title }}</h2>
-        <span class="meta">{{ movie.runtime }} min | Directed by: {{ movie.directors[0] }}</span>
+        <span class="meta">{{ movie.runtime }} min | Directed by: {{ movie.directors }}</span>
         <span class="meta">Released: {{ movie.year }}</span>
-        <span class="meta">Genre: {{ movie.genres[0] }}</span>
+        <span class="meta">Genre: {{ movie.genres }}</span>
 
         <h3>Plot</h3>
         <p>{{ movie.fullplot }}</p>

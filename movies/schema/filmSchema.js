@@ -48,6 +48,7 @@ const typeDefs = gql`
   }
 
   input FilmFilter {
+    _id: ID
     title: String
     year: Int
     genre: String

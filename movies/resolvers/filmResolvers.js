@@ -6,7 +6,9 @@ const resolvers = {
       try {
         let query = {};
         
-        // Build query based on filters
+        if (filter._id) {
+          query._id = filter._id;
+        }
         if (filter.title) {
           query.title = { $regex: filter.title, $options: 'i' };
         }
@@ -27,12 +29,12 @@ const resolvers = {
           .limit(limit)
           .skip(skip)
           .sort({ year: -1 });
-        
-        console.log('Movie.poster: ', results[0]?.poster);
+
+        if(results.length === 1) {
+          console.log(`Fetched ${JSON.stringify(results)} with filter: ${JSON.stringify(filter)}`);
+        }
 
         return results;
-
-        console.log()
       } catch (error) {
         throw new Error('Error fetching films: ' + error.message);
       }

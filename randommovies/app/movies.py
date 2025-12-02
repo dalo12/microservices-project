@@ -177,13 +177,13 @@ class MovieManager:
         if not apiUrl:
             return None
         
-        query = """
-        query($id: String!) {
-            film(id: $id) {
-                ALL_FIELDS
-            }
-        }
-        """.replace("ALL_FIELDS", ALL_FIELDS)
+        query = f"""
+        query($id: ID!) {{
+            films(limit: 1, filter: {{_id: $id}}) {{
+                {ALL_FIELDS}
+            }}
+        }}
+        """
         
         try:
             response = requests.post(apiUrl, json={
@@ -197,7 +197,9 @@ class MovieManager:
                 print(f"GraphQL Error: {data['errors']}")
                 return None
             
-            return data.get("data", {}).get("movieById", None)
+            films = data.get("data", {}).get("films", [])
+            return films[0] if films else None
+            # return data.get("data", {}).get("movieById", None)
         except Exception as e:
             print(f"Error fetching movie by ID: {e}")
             return None

@@ -6,7 +6,7 @@
         <h2>{{ mainMovie.title }}</h2>
         <span>{{ mainMovie.runtime }} min.</span>
         <p>{{ mainMovie.plot }}</p>
-        <router-link :movie=mainMovie :to="`/film/${mainMovie.id}`" class="btn">
+        <router-link :movie=mainMovie :to="`/film/${mainMovie._id}`" class="btn">
           More Info
         </router-link>
       </div>
@@ -15,8 +15,8 @@
     <div class="movie-list">
       <h3>Recommended Films</h3>
       <div class="scroller">
-        <div v-for="movie in recommended" :key="movie.id" class="movie-card">
-          <router-link :to="`/movie/${movie.id}`">
+        <div v-for="movie in recommended" :key="movie._id" class="movie-card">
+          <router-link :to="`/movie/${movie._id}`">
             <img :src="movie.poster || altPoster" :alt="movie.title" />
             <p>{{ movie.title }}</p>
           </router-link>
@@ -27,8 +27,8 @@
     <div class="movie-list">
       <h3>Top Films</h3>
       <div class="scroller">
-        <div v-for="movie in topFilms" :key="movie.id" class="movie-card">
-          <router-link :to="`/movie/${movie.id}`">
+        <div v-for="movie in topFilms" :key="movie._id" class="movie-card">
+          <router-link :to="`/movie/${movie._id}`">
             <img :src="movie.poster || altPoster" :alt="movie.title" />
             <p>{{ movie.title }}</p>
           </router-link>
