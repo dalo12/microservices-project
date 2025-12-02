@@ -129,3 +129,5 @@ networks:
       driver: bridge
     recommender-net:
       driver: bridge
+    rabbit-net:
+      driver: bridge
