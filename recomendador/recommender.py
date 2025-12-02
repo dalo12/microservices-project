@@ -159,11 +159,10 @@ def build_chart(data, genre, percentile=0.85):
 def create_indexes():
     return pd.Series(movies.index, index=movies['title'])
 
-def get_recommendations(title, n=10, self_exclude = True):
+def get_recommendations(title, indexes, n=10, self_exclude = True):
     try:
-        indices = create_indexes()
         # Se intenta obtener el índice del título dado
-        idx = indices[title]
+        idx = indexes[title]
     except KeyError:
         # Si el título no existe, se procede a encontrar el índice de la película más similar
         sim_scores = list(enumerate(cosine_sim))
@@ -185,11 +184,10 @@ def get_recommendations(title, n=10, self_exclude = True):
 
     return recommended_movies
 
-def get_recommendations_hybrid(title, n=10, self_exclude=True):
+def get_recommendations_hybrid(title, indexes, n=10, self_exclude=True):
     try:
         # Se intenta obtener el índice del título dado
-        indices = create_indexes()
-        idx = indices[title]
+        idx = indexes[title]
     except KeyError:
         # Si el título no existe, se procede a encontrar el índice de la película más similar
         sim_scores = list(enumerate(cosine_sim))
@@ -302,5 +300,6 @@ if __name__ == "__main__":
         """Preparemos ahora un mapeo para obtener fácilmente el el índice de una película a partir de su título:"""
 
         titles = movies['title']
+        indices = create_indexes()
 
-        print(get_recommendations("The Godfather"))
+        print(get_recommendations_hybrid("The Godfather", indices))
