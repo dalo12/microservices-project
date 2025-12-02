@@ -10,12 +10,12 @@
       </div>
       <div class="info-col">
         <h2>{{ movie.title }}</h2>
-        <span class="meta">{{ movie.runtime }} min | Directed by: {{ movie.directors }}</span>
-        <span class="meta">Released: {{ movie.year }}</span>
-        <span class="meta">Genre: {{ movie.genres }}</span>
+        <span class="meta">{{ movie.runtime || "undefined" }} min | Directed by: {{ movie.directors?.join(', ') || "Unknown"}}</span>
+        <span class="meta">Released: {{ movie.year || "Unknown" }}</span>
+        <span class="meta">Genre: {{ movie.genres?.join(', ') || "Unknown" }}</span>
 
         <h3>Plot</h3>
-        <p>{{ movie.fullplot }}</p>
+        <p>{{ movie.fullplot || "Unknown" }}</p>
 
         <h3>Main Cast</h3>
         <ul>
@@ -48,7 +48,7 @@ import { onMounted, ref } from 'vue';
 import { api } from '@/plugins/axios.js';
 
 
-const altPoster = "https://i.imgur.com/pu5cj3w.png";
+const altPoster = "https://res.cloudinary.com/drspuruy2/image/upload/v1764677507/no_image_available_l6jwse.png";
 // Get the 'id' prop from the router
 const props = defineProps({
   id: {

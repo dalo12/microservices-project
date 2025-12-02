@@ -28,7 +28,7 @@
       <h3>Top Films</h3>
       <div class="scroller">
         <div v-for="movie in topFilms" :key="movie._id" class="movie-card">
-          <router-link :to="`/movie/${movie._id}`">
+          <router-link :to="`/film/${movie._id}`">
             <img :src="movie.poster || altPoster" :alt="movie.title" />
             <p>{{ movie.title }}</p>
           </router-link>
@@ -46,7 +46,7 @@ import { api } from '@/plugins/axios.js';
 const { getRecommended, getTop, getRandomBanner } = useMovieApi();
 const mainMovie = ref({});
 const topFilms = ref({});
-const altPoster = "https://i.imgur.com/pu5cj3w.png";
+const altPoster = "https://res.cloudinary.com/drspuruy2/image/upload/v1764677507/no_image_available_l6jwse.png";
 
 onMounted(async () => {
   let responseMainMovie = await api.get('/random-movie');
