@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 import os
 from pymongo import MongoClient
 from recommender import Recommender
@@ -39,20 +39,7 @@ def get_user_ratings(email: str):
         print(f"Error fetching user ratings: {e}")
         return []
 
-class MovieRecommendation(BaseModel):
-    _id: str
-    title: str
-    year: Optional[int] = None
-    genres: Optional[List[str]] = None
-    imdb_rating: Optional[float] = None
-    plot: Optional[str] = None
-    fullplot: Optional[str] = None
-    poster: Optional[str] = None
-    runtime: Optional[int] = None
-    cast: Optional[List[str]] = None
-    directors: Optional[List[str]] = None
-
-@app.get("/recommend/{email}", response_model=List[MovieRecommendation])
+@app.get("/recommend/{email}", response_model=List[Dict[str, Any]])
 def recommend_movies(email: str):
     """
     Recommend movies for a user based on their ratings.
@@ -92,19 +79,19 @@ def recommend_movies(email: str):
     # Format response
     results = []
     for _, row in recommendations.iterrows():
-        results.append(MovieRecommendation(
-            _id=row['_id'],
-            title=row['title'],
-            year=row['year'] if 'year' in row and not pd.isna(row['year']) else None,
-            genres=row['genres'] if 'genres' in row and isinstance(row['genres'], list) else [],
-            imdb_rating=row['imdb_rating'] if 'imdb_rating' in row and not pd.isna(row['imdb_rating']) else None,
-            plot=row['plot'] if 'plot' in row and not pd.isna(row['plot']) else None,
-            fullplot=row['fullplot'] if 'fullplot' in row and not pd.isna(row['fullplot']) else None,
-            poster=row['poster'] if 'poster' in row and not pd.isna(row['poster']) else None,
-            runtime=row['runtime'] if 'runtime' in row and not pd.isna(row['runtime']) else None,
-            cast=row['cast'] if 'cast' in row and isinstance(row['cast'], list) else [],
-            directors=row['directors'] if 'directors' in row and isinstance(row['directors'], list) else [],
-        ))
+        item = row.to_dict()
+        # Convert ObjectId to string
+        if '_id' in item:
+            item['_id'] = str(item['_id'])
+        
+        # Handle NaN values for JSON serialization
+        clean_item = {}
+        for k, v in item.items():
+            if pd.isna(v):
+                clean_item[k] = None
+            else:
+                clean_item[k] = v
+        results.append(clean_item)
         
     return results
 
