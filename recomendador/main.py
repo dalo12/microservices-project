@@ -4,6 +4,7 @@ from typing import List, Optional
 import os
 from pymongo import MongoClient
 from recommender import Recommender
+import pandas as pd
 
 app = FastAPI(title="Recommender Microservice")
 

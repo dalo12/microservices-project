@@ -1,5 +1,3 @@
-```python
-# -*- coding: utf-8 -*-
 """[TADW 2025] - Sistemas de recomendación"""
 
 import pandas as pd
@@ -236,4 +234,3 @@ if __name__ == "__main__":
         first_movie_id = recommender.movies.iloc[0]['_id']
         first_movie_title = recommender.get_movie_title_by_id(first_movie_id)
         print(f"\nTitle for movie ID {first_movie_id}: {first_movie_title}")
-```
