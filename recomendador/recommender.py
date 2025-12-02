@@ -67,7 +67,8 @@ class Recommender:
                 "languages": 1,
                 "countries": 1,
                 "type": 1,
-                "runtime": 1
+                "runtime": 1,
+                "poster": 1,
             }
         ))
         

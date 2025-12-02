@@ -40,11 +40,17 @@ def get_user_ratings(email: str):
         return []
 
 class MovieRecommendation(BaseModel):
+    _id: str
     title: str
     year: Optional[int] = None
     genres: Optional[List[str]] = None
     imdb_rating: Optional[float] = None
-    overview: Optional[str] = None
+    plot: Optional[str] = None
+    fullplot: Optional[str] = None
+    poster: Optional[str] = None
+    runtime: Optional[int] = None
+    cast: Optional[List[str]] = None
+    directors: Optional[List[str]] = None
 
 @app.get("/recommend/{email}", response_model=List[MovieRecommendation])
 def recommend_movies(email: str):
@@ -87,11 +93,17 @@ def recommend_movies(email: str):
     results = []
     for _, row in recommendations.iterrows():
         results.append(MovieRecommendation(
+            _id=row['_id'],
             title=row['title'],
             year=row['year'] if 'year' in row and not pd.isna(row['year']) else None,
             genres=row['genres'] if 'genres' in row and isinstance(row['genres'], list) else [],
-            imdb_rating=row['imdb.rating'] if 'imdb.rating' in row and not pd.isna(row['imdb.rating']) else None,
-            overview=row['plot'] if 'plot' in row and not pd.isna(row['plot']) else None
+            imdb_rating=row['imdb_rating'] if 'imdb_rating' in row and not pd.isna(row['imdb_rating']) else None,
+            plot=row['plot'] if 'plot' in row and not pd.isna(row['plot']) else None,
+            fullplot=row['fullplot'] if 'fullplot' in row and not pd.isna(row['fullplot']) else None,
+            poster=row['poster'] if 'poster' in row and not pd.isna(row['poster']) else None,
+            runtime=row['runtime'] if 'runtime' in row and not pd.isna(row['runtime']) else None,
+            cast=row['cast'] if 'cast' in row and isinstance(row['cast'], list) else [],
+            directors=row['directors'] if 'directors' in row and isinstance(row['directors'], list) else [],
         ))
         
     return results
