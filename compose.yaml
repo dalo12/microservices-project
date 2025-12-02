@@ -26,6 +26,7 @@ services:
       - 8080:8080
     networks:
       - random-frontend-net
+      - rating-net
   database:
     image: mongo:latest
     container_name: database
@@ -40,6 +41,7 @@ services:
       - mongo-data:/data/db
     networks:
       - movies-network
+      - opinion-net
 
   movies:
     container_name: movies
@@ -63,7 +65,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks:
-      - movies-network
+      - opinion-net
+      - rating-net
 
   calificacion:
     container_name: calificacion
@@ -89,7 +92,8 @@ services:
       - rabbitmq
       - database
     networks:
-      - movies-network
+      - rating-net
+
 volumes:
   mongo-data:
 
@@ -97,4 +101,8 @@ networks:
     random-frontend-net:
       driver: bridge    
     movies-network:
+      driver: bridge
+    opinion-net:
+      driver: bridge
+    rating-net:
       driver: bridge
