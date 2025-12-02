@@ -16,6 +16,7 @@ services:
     networks:
       - random-frontend-net
       - movies-network
+      
   frontend:
     container_name: frontend
     build:
@@ -27,6 +28,7 @@ services:
     networks:
       - random-frontend-net
       - rating-net
+      - recommender-net
   database:
     image: mongo:latest
     container_name: database
@@ -42,6 +44,7 @@ services:
     networks:
       - movies-network
       - opinion-net
+      - recommender-net
 
   movies:
     container_name: movies
@@ -93,6 +96,17 @@ services:
       - database
     networks:
       - rating-net
+
+  recomendador:
+    container_name: recomendador
+    build:
+      context: recomendador
+    environment:
+      DATABASE_CONN_STRING: mongodb://admin:12345@localhost:27017/sample_mflix?authSource=admin
+    depends_on:
+      - database
+    networks:
+      - recommender-net
 
 volumes:
   mongo-data:
