@@ -68,8 +68,7 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks:
-      - opinion-net
-      - rating-net
+      - rabbit-net
 
   calificacion:
     container_name: calificacion
@@ -82,7 +81,8 @@ services:
     depends_on:
       - rabbitmq
     networks:
-      - movies-network
+      - rating-network
+      - rabbit-net
 
   opiniones:
     container_name: opiniones
@@ -95,7 +95,8 @@ services:
       - rabbitmq
       - database
     networks:
-      - rating-net
+      - opinion-net
+      - rabbit-net
 
   recomendador:
     container_name: recomendador
