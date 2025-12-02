@@ -87,7 +87,9 @@ def recommend_movies(email: str):
         # Handle NaN values for JSON serialization
         clean_item = {}
         for k, v in item.items():
-            if pd.isna(v):
+            if isinstance(v, (list, dict, tuple)):
+                clean_item[k] = v
+            elif pd.isna(v):
                 clean_item[k] = None
             else:
                 clean_item[k] = v
