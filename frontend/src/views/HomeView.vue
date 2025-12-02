@@ -41,24 +41,25 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useMovieApi } from '../data/db.js';
-import { api } from '@/plugins/axios.js'; 
+import { apiRandomMovies, apiRecommendedMovies } from '@/plugins/axios.js'; 
 
 const { getRecommended, getTop, getRandomBanner } = useMovieApi();
 const mainMovie = ref({});
 const topFilms = ref({});
 const altPoster = "https://res.cloudinary.com/drspuruy2/image/upload/v1764677507/no_image_available_l6jwse.png";
+const recommended = ref([]);
+const userMail = "user@mail.com"
 
 onMounted(async () => {
-  let responseMainMovie = await api.get('/random-movie');
+  let responseMainMovie = await apiRandomMovies.get('/random-movie');
   mainMovie.value = responseMainMovie.data || {};
 
-  let responseTopFilms = await api.get('/top-movies/10');
+  let responseTopFilms = await apiRandomMovies.get('/top-movies/10');
   topFilms.value = responseTopFilms.data.movies || {};
+
+  let responseRecommended = await apiRecommendedMovies.get(`/recommend/${userMail}`);
+  recommended.value = responseRecommended.data.movies || {};
 })
-// When the component is created, fetch the data
-
-
-const recommended = ref(getRecommended());
 </script>
 
 <style scoped>

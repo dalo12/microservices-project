@@ -23,6 +23,9 @@ services:
       context: frontend
     environment:
       NODE_ENV: production
+      RANDOM_MOVIES_URL: http://randommovies:5000
+      RECOMMENDED_MOVIES_URL: http://recomendador:5002
+      RATING_URL: http://calificacion:5001
     ports:
       - 8080:8080
     networks:
