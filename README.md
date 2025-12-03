@@ -3,6 +3,8 @@ Microservices project for a web catalog of films. Made for the assignment Tópic
 
 ![architecture](./resources/arch.png)
 
+### Set up and running
+
 All you need to do is run the app
 
     $ docker compose up --build
@@ -21,12 +23,12 @@ Note: to use `mongorestore` you need the MongoDB Command Line Database Tools. Yo
 
 The microservices are implemented as follows:
 
-- Movies: GraphQL + Express
-- RandomMovies: Flask
-- Frontend: Vue.js
-- Calificacion: Express
-- Opiniones: Javascript
-- Recomendador: Python + FastAPI
+- **Movies:** GraphQL + Express
+- **RandomMovies:** Flask
+- **Frontend:** Vue.js
+- **Calificacion:** Express
+- **Opiniones:** Javascript
+- **Recomendador:** Python + FastAPI
 
 The goal was to showcase the nature of a microservices architecture, where each microservice is independent from the others, even in terms of technology stack.
 
