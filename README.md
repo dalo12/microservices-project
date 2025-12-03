@@ -19,7 +19,7 @@ Note: to use `mongorestore` you need the MongoDB Command Line Database Tools. Yo
 
 ### Notes
 
-The microservices are implemented in the following way:
+The microservices are implemented as follows:
 
 - Movies: GraphQL + Express
 - RandomMovies: Flask
@@ -28,13 +28,12 @@ The microservices are implemented in the following way:
 - Opiniones: Javascript
 - Recomendador: Python + FastAPI
 
-The goal was show the nature of the microservices architecture, where each microservice is idependent each other, even in stack.
+The goal was to showcase the nature of a microservices architecture, where each microservice is independent from the others, even in terms of technology stack.
 
-The recommendation strategy is as follows:
-- If the user has no rating made, it recommends to him the top rated movies
-- If the user had rated movies, it recommends to him movies based in his ratings
+The recommendation strategy works as follows:
+- If the user has not rated any movies, the system recommends the top-rated movies.
+- If the user has rated movies, the system recommends new movies based on those ratings.
 
 ### Future work
-
-- There is aesthetic matters that I didn't get around to fixing it
-- There is a problem with the posters: the database has posters, but the GraphQL service in Movies returns poster=null. I couldn't figure out why.
+- There are aesthetic issues that I didn't have time to fix.
+- There is a problem with the posters: the database contains poster data, but the GraphQL Movies service returns `poster = null`. I wasn’t able to determine the cause.
